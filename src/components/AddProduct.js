@@ -40,7 +40,15 @@ const AddProduct = () => {
     }
 
     if (file.size > size) {
-      Swal.fire('Failed', 'Ukuran file tidak boleh lebih dari 100KB', 'error');
+      console.log(e.target, 'target', file.size, 'ini size');
+
+      Swal.fire(
+        'Failed',
+        `Jangan upload lebih dari 100 KB </b> <br> Ukuran file yang di upload <b> ${Math.ceil(
+          file.size / 1000
+        )}  KB`,
+        'error'
+      );
       e.target.value = '';
       return;
     }
