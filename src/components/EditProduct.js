@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const EditProduct = () => {
   const [name, setName] = useState('');
@@ -33,8 +34,41 @@ const EditProduct = () => {
 
   const loadImage = (e) => {
     const image = e.target.files[0];
-    setPhoto(image);
+
     setPreview(URL.createObjectURL(image));
+
+    const size = 100000;
+    const file = e.target.files[0];
+
+    if (
+      !file.type.startsWith('image/jpeg') &&
+      !file.type.startsWith('image/png')
+    ) {
+      Swal.fire(
+        'Failed',
+        'Hanya format JPG and PNG yang bisa di upload',
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+
+    if (file.size > size) {
+      console.log(e.target, 'target', file.size, 'ini size');
+
+      Swal.fire(
+        'Failed',
+        `Jangan upload lebih dari 100 KB </b> <br> Ukuran file yang di upload <b> ${Math.ceil(
+          file.size / 1000
+        )}  KB`,
+        'error'
+      );
+      e.target.value = '';
+      return;
+    }
+
+    setPhoto(image);
+    console.log(e.target.files[0]);
   };
 
   const updateProduct = async (e) => {
